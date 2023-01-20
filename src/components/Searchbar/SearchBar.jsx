@@ -1,15 +1,21 @@
-<header class="searchbar">
-  <form class="form">
-    <button type="submit" class="button">
-      <span class="button-label">Search</span>
+
+
+export const SearchBar = () => {
+  return (
+<header >
+  <form >
+    <button type="submit" >
+      <span >Search</span>
     </button>
 
     <input
-      class="input"
       type="text"
-      autocomplete="off"
-      autofocus
+      autoComplete="off"
+      autoFocus
       placeholder="Search images and photos"
     />
   </form>
 </header>
+  )
+}
+
