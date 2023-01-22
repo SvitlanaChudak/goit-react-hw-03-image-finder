@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 import { SearchBar } from "./Searchbar/SearchBar";
 import { ImageGallery } from "./ImageGallery/ImageGallery";
+import { Button } from "./Button/Button";
 import axios from "axios";
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
@@ -9,9 +10,24 @@ axios.defaults.baseURL = 'https://pixabay.com/api/';
 export class App extends Component {
   state = {
     items: [],
+    query: '',
     isLoading: false,
     error: null,
   };
+
+  // handleSubmit = event => {
+  //   event.preventDefault();
+  //   this.setState({
+  //     page: 1,
+  //     query: event.currentTarget.value,
+  //     items: [],
+  //   })
+  //   event.target.reset();
+  // }
+
+  //     queryInput = event => {
+  //   this.setState({ query: event.target.value });
+  // };
 
   async componentDidMount() {
     this.setState({ isLoading: true });
@@ -30,10 +46,11 @@ export class App extends Component {
  const { items, isLoading, error } = this.state;
     return (
       <div>
-        <SearchBar />
+        <SearchBar  />
        {error && <p>Something went wrong: {error.message}</p>}
         {isLoading && <p>Loading...</p>}
         <ImageGallery items={items} />
+        <Button />
       </div>
     );
   }
