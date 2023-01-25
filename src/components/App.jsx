@@ -1,4 +1,3 @@
-
 import React, { Component } from "react";
 import { fetchImages } from "services/api";
 import { SearchBar } from "./Searchbar/SearchBar";
@@ -11,15 +10,24 @@ import { animateScroll } from 'react-scroll';
 
 export class App extends Component {
   state = {
-    images: [],
     searchQuery: '',
+    images: [],
     page: 1,
+    per_page: 12,
     isLoading: false,
+    loadMore: false,
     error: null,
     showModal: false,
     largeImageURL: 'largeImageURL',
-    loadMore: false,
+    id: null,
   };
+
+    componentDidUpdate(_, prevState) {
+    const { searchQuery, page } = this.state;
+    if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
+      this.getImages(searchQuery, page);
+    }
+  }
 
     getImages = async (query, page) => {
       this.setState({ isLoading: true });
@@ -28,7 +36,6 @@ export class App extends Component {
     }
       try {
       const { hits, totalHits } = await fetchImages(query, page);
-      console.log(hits, totalHits);
       this.setState(prevState => ({
         images: [...prevState.images, ...hits],
         loadMore: this.state.page < Math.ceil(totalHits / this.state.per_page),
@@ -40,25 +47,18 @@ export class App extends Component {
     }
   };
 
-  componentDidUpdate(_, prevState) {
-    const { searchQuery, page } = this.state;
-    if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
-      this.getImages(searchQuery, page);
-    }
-  }
-
     onFormSubmit = searchQuery => {
       this.setState({
       searchQuery,
       images: [],
       page: 1,
-
+      loadMore: false,
     });
   };
 
     onloadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
-this.scrollOnMoreButton();
+    this.scrollOnMoreButton();
   };
 
     scrollOnMoreButton = () => {
@@ -70,7 +70,6 @@ this.scrollOnMoreButton();
   };
 
   openModal = largeImageURL => {
-    console.log(largeImageURL);
     this.setState({
       showModal: true,
       largeImageURL: largeImageURL,
@@ -87,20 +86,19 @@ this.scrollOnMoreButton();
  const { isLoading, error, images, showModal, largeImageURL, loadMore, page} = this.state;
     return (
       <div>
-        
-          <SearchBar onSubmit={this.onFormSubmit} />
+
+        <SearchBar onSubmit={this.onFormSubmit} />
           
-       {error && <p>{error}</p>}
-        {isLoading && <p>Loading...</p>}
+        {error && <p>{error}</p>}
         
-           {isLoading ? (
-          <Loader />
-        ) : (
-          <ImageGallery images={images} openModal={this.openModal} />
-        )}
+        {isLoading ? 
+        (<Loader />) :
+        (<ImageGallery images={images} openModal={this.openModal} />)}
           
-       {loadMore && <Button onloadMore={this.onloadMore} page={page} />}
-        {showModal && <Modal largeImageURL={largeImageURL} onClose={this.closeModal} />}
+        {loadMore && <Button onloadMore={this.onloadMore} page={page} />}
+
+        {showModal && (<Modal largeImageURL={largeImageURL} onClose={this.closeModal} />)}
+        
       </div>
     );
   }
