@@ -99,9 +99,9 @@ export class App extends Component {
           
         {error && <p>{error}</p>}
         
-        {isLoading ? 
-        (<Loader />) :
-        (<ImageGallery images={images} openModal={this.openModal} />)}
+        {isLoading && <Loader />}
+        
+        <ImageGallery images={images} openModal={this.openModal} />
           
         {loadMore && <Button onloadMore={this.onloadMore} page={page} />}
 
