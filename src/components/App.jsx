@@ -6,6 +6,7 @@ import { Button } from "./Button/Button";
 import { Modal } from "./Modal/Modal";
 import { Loader } from './Loader/Loader';
 import { animateScroll } from 'react-scroll';
+import { Container } from "./App.styled";
 
 
 export class App extends Component {
@@ -85,7 +86,7 @@ export class App extends Component {
   render() {
  const { isLoading, error, images, showModal, largeImageURL, loadMore, page} = this.state;
     return (
-      <div>
+      <Container>
 
         <SearchBar onSubmit={this.onFormSubmit} />
           
@@ -99,7 +100,7 @@ export class App extends Component {
 
         {showModal && (<Modal largeImageURL={largeImageURL} onClose={this.closeModal} />)}
         
-      </div>
+      </Container>
     );
   }
 }
