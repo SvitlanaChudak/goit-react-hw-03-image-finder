@@ -33,16 +33,20 @@ export class App extends Component {
 
     getImages = async (query, page) => {
       this.setState({ isLoading: true });
-      if (!query) {
-        return 
-    }
       try {
         const { hits, totalHits } = await fetchImages(query, page);
-      this.setState(prevState => ({
-        images: [...prevState.images, ...hits],
-        loadMore: this.state.page < Math.ceil(totalHits / this.state.per_page),
-      }));
-    } catch (error) {
+        if (totalHits > 0) {
+          this.setState(prevState => ({
+            images: [...prevState.images, ...hits],
+            loadMore: this.state.page < Math.ceil(totalHits / this.state.per_page),
+          }));
+        toast.success('Images found');
+        }
+        else {
+        toast.error('Images not found');
+      }
+      }
+    catch (error) {
         this.setState({ error });
         toast.error('Something went wrong');
     } finally {

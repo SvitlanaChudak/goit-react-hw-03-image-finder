@@ -3,7 +3,6 @@ import { Header, SearchForm, FormButton, Input } from './SearchBar.styled';
 import { FcSearch } from 'react-icons/fc';
 import {toast, Toaster} from 'react-hot-toast';
 
-
 export class SearchBar extends Component {
   state = {
     searchQuery: '',
@@ -21,7 +20,6 @@ export class SearchBar extends Component {
       return toast.error('Please enter something');
     }
     this.props.onSubmit(this.state.searchQuery);
-     toast.success('Images found');
     this.setState({ searchQuery: '' });
   };
 
