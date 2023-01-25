@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Header, SearchForm, FormButton, Input, Span } from './SearchBar.styled';
+import { Header, SearchForm, FormButton, Input } from './SearchBar.styled';
+import { FcSearch } from 'react-icons/fc';
+import {toast, Toaster} from 'react-hot-toast';
+
 
 export class SearchBar extends Component {
   state = {
@@ -15,18 +18,21 @@ export class SearchBar extends Component {
   onSubmit = event => {
     event.preventDefault();
     if (this.state.searchQuery.trim() === '') {
-      return alert('Please enter something');
+      return toast.error('Please enter something');
     }
     this.props.onSubmit(this.state.searchQuery);
+     toast.success('Images found');
     this.setState({ searchQuery: '' });
   };
 
   render() {
     return (
-<Header >
+      
+      <Header >
+        <Toaster />
    <SearchForm onSubmit={this.onSubmit}>
-     <FormButton type="submit">
-       <Span >Search</Span>
+          <FormButton type="submit">
+            <FcSearch size={25}/>
     </FormButton>
 
     <Input
@@ -39,7 +45,8 @@ export class SearchBar extends Component {
       onChange={this.onChange}
     />
   </SearchForm>
-</Header>
+      </Header>
+      
     );
   }
 }

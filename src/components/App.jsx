@@ -7,6 +7,7 @@ import { Modal } from "./Modal/Modal";
 import { Loader } from './Loader/Loader';
 import { animateScroll } from 'react-scroll';
 import { Container } from "./App.styled";
+import {toast, Toaster} from 'react-hot-toast';
 
 
 export class App extends Component {
@@ -24,7 +25,7 @@ export class App extends Component {
   };
 
     componentDidUpdate(_, prevState) {
-    const { searchQuery, page } = this.state;
+      const { searchQuery, page } = this.state;
     if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
       this.getImages(searchQuery, page);
     }
@@ -32,17 +33,18 @@ export class App extends Component {
 
     getImages = async (query, page) => {
       this.setState({ isLoading: true });
-          if (!query) {
-      return;
+      if (!query) {
+        return 
     }
       try {
-      const { hits, totalHits } = await fetchImages(query, page);
+        const { hits, totalHits } = await fetchImages(query, page);
       this.setState(prevState => ({
         images: [...prevState.images, ...hits],
         loadMore: this.state.page < Math.ceil(totalHits / this.state.per_page),
       }));
     } catch (error) {
-      this.setState({ error: 'Something went wrong', });
+        this.setState({ error });
+        toast.error('Something went wrong');
     } finally {
       this.setState({ isLoading: false });
     }
@@ -54,7 +56,7 @@ export class App extends Component {
       images: [],
       page: 1,
       loadMore: false,
-    });
+      });
   };
 
     onloadMore = () => {
@@ -87,6 +89,7 @@ export class App extends Component {
  const { isLoading, error, images, showModal, largeImageURL, loadMore, page} = this.state;
     return (
       <Container>
+        <Toaster />
 
         <SearchBar onSubmit={this.onFormSubmit} />
           
